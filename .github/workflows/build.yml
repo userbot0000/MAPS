@@ -1,0 +1,54 @@
+name: Build Israel/Palestine Vector Tiles
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_zoom:
+        description: "Maximum zoom level (affects size)"
+        required: false
+        default: "15"
+      heap:
+        description: "Java heap size"
+        required: false
+        default: "12G"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATA_DIR: data-cache
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Cache downloads
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.DATA_DIR }}
+          key: data-${{ hashFiles('build_tiles.py') }}-${{ github.event.inputs.max_zoom || '15' }}
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip
+
+      - name: Build MBTiles
+        run: |
+          python build_tiles.py \
+            --data-dir "${{ env.DATA_DIR }}" \
+            --max-zoom "${{ github.event.inputs.max_zoom || '15' }}" \
+            --heap "${{ github.event.inputs.heap || '12G' }}"
+
+      - name: Archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: israel-palestine-mbtiles
+          path: build/israel-palestine.mbtiles
