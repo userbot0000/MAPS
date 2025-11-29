@@ -16,10 +16,10 @@ import sys
 from pathlib import Path
 from urllib.request import urlretrieve
 
-PLANETILER_VERSION = "0.7.3"
+PLANETILER_VERSION = "0.9.3"
 PLANETILER_JAR_URL = (
     f"https://github.com/onthegomap/planetiler/releases/download/v{PLANETILER_VERSION}/"
-    f"planetiler-{PLANETILER_VERSION}-with-deps.jar"
+    "planetiler.jar"
 )
 OSM_PBF_URL = "https://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf"
 DEFAULT_BOUNDS = "34.0,29.0,36.0,34.0"  # lon_min,lat_min,lon_max,lat_max
