@@ -19,7 +19,7 @@ from urllib.request import urlretrieve
 PLANETILER_VERSION = "0.7.3"
 PLANETILER_JAR_URL = (
     f"https://github.com/onthegomap/planetiler/releases/download/v{PLANETILER_VERSION}/"
-    "planetiler.jar"
+    f"planetiler-{PLANETILER_VERSION}-with-deps.jar"
 )
 OSM_PBF_URL = "https://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf"
 DEFAULT_BOUNDS = "34.0,29.0,36.0,34.0"  # lon_min,lat_min,lon_max,lat_max
@@ -112,7 +112,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    planetiler_path = args.data_dir / "planetiler.jar"
+    jar_name = Path(args.planetiler_url).name
+    planetiler_path = args.data_dir / jar_name
     osm_path = args.data_dir / "israel-palestine.osm.pbf"
 
     download(args.planetiler_url, planetiler_path)
