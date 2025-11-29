@@ -43,7 +43,7 @@ def run_planetiler(jar: Path, args: argparse.Namespace) -> None:
         str(jar),
         f"--osm-path={args.osm_pbf}",
         f"--mbtiles={args.output}",
-        f"--download=false",
+        "--download=true",
         f"--min-zoom={args.min_zoom}",
         f"--max-zoom={args.max_zoom}",
         f"--bounds={args.bounds}",
